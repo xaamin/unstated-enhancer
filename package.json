@@ -7,6 +7,16 @@
   "repository": "https://github.com/xaamin/unstated-enhancers.git",
   "author": "Ben <xaamin@outllok.com>",
   "license": "MIT",
+  "keywords": [
+    "unstated",
+    "logger",
+    "debug",
+    "log",
+    "enhancer",
+    "middleware",
+    "persist",
+    "condition"
+  ],
   "scripts": {
     "build": "tsc"
   },
