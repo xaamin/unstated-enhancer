@@ -18,7 +18,7 @@ Redux like logger with redux dev tools integration
 
 ### Connect containers to components
 
-Heavily inspired by [`unstated-connect](https://github.com/goncy/unstated-connect)
+Heavily inspired by [unstated-connect](https://github.com/goncy/unstated-connect)
 
 [Docs](https://github.com/xaamin/unstated-enhancers/blob/master/docs/unstated-connect.md)
 
