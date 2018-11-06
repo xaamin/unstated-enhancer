@@ -12,6 +12,8 @@ yarn install --save unstated-enhancers
 
 ### Logger
 
+Redux like logger with redux dev tools integration
+
 [Docs](https://github.com/xaamin/unstated-enhancers/blob/master/docs/unstated-logger.md)
 
 ### Connect containers to components
