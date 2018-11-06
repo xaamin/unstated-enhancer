@@ -78,8 +78,6 @@ const container = combine({
   message: MessageContainer
 })(AppContainer)
 
-/* APP */
-
 const App = () => (
   <Subscribe to={[container]}>
     {
