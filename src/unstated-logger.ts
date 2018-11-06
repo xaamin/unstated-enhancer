@@ -4,11 +4,14 @@ import Str from './support/Str'
 import LoggerConfig from './support/LoggerConfig';
 import colors from './support/logger-colors'
 
+const _global: any = window || global;
 const __SUPER_SECRET_CONTAINER_DEBUG_HOOK__ = (unstated as any).__SUPER_SECRET_CONTAINER_DEBUG_HOOK__
-const ENABLED = typeof window !== 'undefined' && process.env.NODE_ENV !== 'production' && (window as any).__REDUX_DEVTOOLS_EXTENSION__
+const ENABLED = typeof _global !== 'undefined' && process.env.NODE_ENV !== 'production' && _global.__REDUX_DEVTOOLS_EXTENSION__
 
 if (ENABLED) {
   console.log(`You're currently using the unstated logger for development, disable it for production`)
+} else {
+  console.log(`You're in production or redux dev tools plugin is missing so unstated logger is disabled`)
 }
 
 class Logger {
@@ -138,7 +141,7 @@ class Logger {
     }
 
     if (this.enabled) {
-      instance = (window as any).__REDUX_DEVTOOLS_EXTENSION__.connect({ name })
+      instance = _global.__REDUX_DEVTOOLS_EXTENSION__.connect({ name })
       instance.init()
 
       this.__containers[name].instance = instance
