@@ -11,7 +11,9 @@ class Manager {
   constructor() {
     this.__containers = {};
     this.beauty = false;
+  }
 
+  run() {
     this.__bootstrap();
   }
 

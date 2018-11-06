@@ -2,9 +2,9 @@
 
 Debug your [unstated](https://github.com/jamiebuilds/unstated) containers easily with `unstated-logger` who adds support for redux dev tools. The integration with the `redux dev tools` plugin makes jumping from different state in time possible (time travel).
 
-<br>
-<img src="assets/screenshot.png" width="1145">
-<br>
+<br />
+  <img src="assets/screenshot.png" width="1145">
+<br />
 
 ## Install
 
@@ -100,6 +100,7 @@ Logger.config(config);
 ```
 
 #### collapsed
+
 Type: `boolean`
 <br>
 Default: `false`
@@ -107,6 +108,7 @@ Default: `false`
 Collapse the state change logs in the Dev Tools console.
 
 #### detailed
+
 Type: `boolean`
 <br>
 Default: `true`
@@ -114,6 +116,7 @@ Default: `true`
 Log detailed state changes (Added, deleted and changed).
 
 #### ignore
+
 Type: `array`
 <br>
 Default: `['JUMP_TO_STATE', 'JUMP_TO_ACTION']`
@@ -121,6 +124,7 @@ Default: `['JUMP_TO_STATE', 'JUMP_TO_ACTION']`
 Actions to be ignored in the redux Dev Tools notifications.
 
 #### details
+
 Type: `array`
 <br>
 Default: `['added', 'updated', 'deleted']`
