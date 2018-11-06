@@ -1,13 +1,13 @@
-# Unstated Compose
+# Unstated combine
 
-Compose multiple containers into one.
+Combine multiple containers into one.
 
 This is useful when you want to have a single container but it starts to become too big. This package allows you to refactor it into multiple separate containers that can still be merged back together.
 
 ## Install
 
 ```sh
-npm install --save unstated-compose
+npm install --save unstated-enhancers
 ```
 
 ## Usage
@@ -15,16 +15,11 @@ npm install --save unstated-compose
 It allows to write an app like the following, where there are multiple containers, which can access each other's methods and state, while your components still consume only 1 container.
 
 ```tsx
-/* IMPORT */
+import React from 'react';
+import { Subscribe, Container } from 'unstated';
+import { combine } from 'unstated-enhancers';
 
-import * as React from 'react';
-import {render} from 'react-dom';
-import {Provider, Subscribe} from 'unstated';
-import {compose, ChildContainer, ParentContainer} from './compose';
-
-/* CONTAINERS */
-
-class CounterContainer extends ChildContainer<any, any> {
+class CounterContainer extends Container {
   state = {
     counter: 123
   }
@@ -42,7 +37,7 @@ class CounterContainer extends ChildContainer<any, any> {
   }
 }
 
-class MessageContainer extends ChildContainer<any, any> {
+class MessageContainer extends Container {
   state = {
     message: 'Default message'
   }
@@ -60,7 +55,7 @@ class MessageContainer extends ChildContainer<any, any> {
   }
 }
 
-class AppContainer extends ParentContainer<any, any> {
+class AppContainer extends Container {
   state = {
     joke: 'Default joke'
   }
@@ -81,7 +76,9 @@ class AppContainer extends ParentContainer<any, any> {
 const container = combine({
   counter: CounterContainer,
   message: MessageContainer
-});
+})(AppContainer)
+
+/* APP */
 
 const App = () => (
   <Subscribe to={[container]}>
@@ -89,7 +86,7 @@ const App = () => (
       app => (
         <div>
           <h3>Counter</h3>
-          <p>{ app.counter.get () }</p>
+          <p>{app.counter.get ()}</p>
           <button onClick={() => app.counter.set ( Math.random () )}>Update from CounterContainer</button>
           <button onClick={app.message.setCounter}>Update from MessageContainer</button>
           <button onClick={app.setCounter}>Update from AppContainer</button>
