@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Subscribe } from 'unstated';
+import * as isShallowEqual from 'shallowequal';
 
 const isObject = (value) => {
   return value && typeof value === 'object' && value.constructor === Object;
@@ -16,7 +17,36 @@ const makeContainers = (containers: any, config: any): any => {
   return inject;
 }
 
-const connect = ( options: any = {}, mapStateToProps?: (state: any) => any, mapContainersToProps?: (containers: any) => any) => {
+const wrap = (mapStateToProps: (containers: any) => any, options: any = { pure: true }) => {
+
+  return (Component) => {
+    return class SelectorComponent extends React.Component<any, any> {
+
+      selectedProps = mapStateToProps(this.props.containers);
+
+      shouldComponentUpdate () {
+        const nextSelectedProps = mapStateToProps(this.props.containers);
+        const statesAreEqual = isShallowEqual(this.selectedProps, nextSelectedProps ) ;
+
+        if ( options.pure && statesAreEqual) {
+          return false;
+        }
+
+        this.selectedProps = nextSelectedProps;
+
+        return true;
+
+      }
+
+      render () {
+        return <Component {...this.selectedProps} />;
+      }
+    }
+  }
+}
+
+
+const connect = ( options: any = {}, mapStateToProps?: (state: any) => any, mapContainersToProps?: (containers: any) => any, config: any = undefined) => {
   if (!isObject(options)) {
     throw new Error('Connect needs an object with containers')
   }
@@ -27,11 +57,11 @@ const connect = ( options: any = {}, mapStateToProps?: (state: any) => any, mapC
   let mappedContainers: any;
 
   return Component => props => {
-    let ConnectedComponenet = Component;
-
     return (
       <Subscribe to={ _containers }>
         { (...containers) => {
+          let ConnectedComponenet = Component;
+          let mappedState: any;
 
           if (!inject) {
             inject = makeContainers(containers, options);
@@ -39,6 +69,10 @@ const connect = ( options: any = {}, mapStateToProps?: (state: any) => any, mapC
 
           if (!mappedContainers && mapContainersToProps) {
             mappedContainers = mapContainersToProps(inject);
+          }
+
+          if (mapStateToProps) {
+            mappedState = mapStateToProps(mappedContainers || inject);
           }
 
           let newProps = {
@@ -50,15 +84,21 @@ const connect = ( options: any = {}, mapStateToProps?: (state: any) => any, mapC
           } else {
             newProps.containers = mappedContainers;
           }
-
-          if (mapStateToProps) {
-            let mappedState: any = mapStateToProps(inject);
-
+          
+          if (mappedState) {
             newProps = {
               ...mappedState,
               ...newProps
             }
           }
+
+          ConnectedComponenet = <ConnectedComponenet { ...newProps } />;
+
+          if (mappedState) {
+            ConnectedComponenet = wrap(mapStateToProps, config)(ConnectedComponenet);
+          }
+
+          console.log('CONNECTED', ConnectedComponenet);
 
           return <ConnectedComponenet { ...newProps } />;
         } }
