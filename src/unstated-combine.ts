@@ -1,6 +1,6 @@
 import { Container as UnstatedContainer } from 'unstated';
 
-const combine = (containers: object) => {
+const combine = (containers: object, name = 'CombineContainer') => {
   return function ( Container = UnstatedContainer as any ) {
     return class SuperContainer<Context extends object, State extends object> extends Container {
       ctx: Context;
@@ -11,6 +11,8 @@ const combine = (containers: object) => {
 
         this.state = ({} as State);
         this.ctx = ({} as Context);
+
+        this.name = name;
 
         for (let name in containers) {
           const container = new containers[name]();
@@ -26,10 +28,11 @@ const combine = (containers: object) => {
           container.setState = async (...args) => {
             await setState.apply (container, args);
 
-            const state = Object.assign ({}, container.state);
+            const state = container.state;
 
             this.setState ({
-              [name]: state
+              [name]: state,
+              __action: 'COMBINE_CONTAINERS_STATES'
             });
           }
         }

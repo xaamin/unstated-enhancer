@@ -5,30 +5,56 @@ const isObject = (value) => {
   return value && typeof value === 'object' && value.constructor === Object;
 }
 
-const connect = ( options: any = {}, config: any = {} ) => {
-  if (!isObject(options)) {
-    throw new Error('Connect needs an object for containers')
+const makeContainers = (containers: any, config: any): any => {
+  let keys: string[] = Object.keys(config);
+  let inject = {};
+
+  for (let index in keys) {
+    inject[keys[index]] = containers[index];
   }
 
-  if (config) {
-    // Do awesome things over containers
-    // with the config
+  return inject;
+}
+
+const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapContainersToProps?: (containers: any) => any) => {
+  if (!isObject(config)) {
+    throw new Error('Connect needs an object with containers')
   }
 
-  let _containers: any = Object.values(options);;
-  let keys: string[] = Object.keys(options);
+  let _containers: any[] = Object.values(config);
+  let injected: any;
+  let isMapped: boolean = false;
 
   return Component => props => {
     return (
       <Subscribe to={ _containers }>
         { (...containers) => {
-          let inject: any = {};
+          let mappedState: any;
 
-          for (let index in keys) {
-            inject[keys[index]] = containers[index];
+          if (!injected) {
+            injected = makeContainers(containers, config);
           }
 
-          return <Component {...props} containers={ inject } />;
+          if (mapContainersToProps && !isMapped) {
+            injected = mapContainersToProps(injected);
+
+            isMapped = true;
+          }
+
+          if (mapStateToProps) {
+            mappedState = mapStateToProps(injected);
+          }
+
+          let newProps = props;
+
+          if (mappedState) {
+            newProps = {
+              ...props,
+              ...mappedState
+            };
+          }
+
+          return <Component {...newProps} containers={ injected } />;
         } }
       </Subscribe>
     )
