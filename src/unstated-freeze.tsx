@@ -2,7 +2,14 @@ import * as React from 'react';
 import * as differ from 'deep-object-diff';
 import isShallowEqual from 'shallowequal';
 
-const frezze = (mapProps: (props: any)) => any, options: any = { pure: true }) => {
+const DEFAULT = {
+  ownProps: [
+    'containers'
+  ],
+  pure: false
+}
+
+const frezze = (selector: (props: any)) => any, options: any = DEFAULT): any => {
     return (Component) => {
       return class SelectorComponent extends React.Component<any, any> {
         selectedProps;
@@ -10,11 +17,11 @@ const frezze = (mapProps: (props: any)) => any, options: any = { pure: true }) =
         constructor(props) {
           super(props);
 
-          this.selectedProps = mapProps(this.props);
+          this.selectedProps = selector(this.props);
         }
 
         shouldComponentUpdate (nextProps) {
-          const nextSelectedProps = mapProps(nextProps);
+          const nextSelectedProps = selector(nextProps);
           let statesAreEqual = false;
 
           if (options.pure) {
@@ -30,6 +37,7 @@ const frezze = (mapProps: (props: any)) => any, options: any = { pure: true }) =
           }
 
           if (!statesAreEqual) {
+
             this.selectedProps = nextSelectedProps;
           }
 
@@ -39,11 +47,8 @@ const frezze = (mapProps: (props: any)) => any, options: any = { pure: true }) =
 
         render () {
           const { containers } = this.props;
-          const props = {
 
-          }
-
-          return <Component { ...this.selectedProps } containers={ containers } />;
+          return <Component { ...this.selectedProps } />;
         }
       };
     }
