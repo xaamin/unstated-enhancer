@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Subscribe } from 'unstated';
-import frezze from './unstated-freeze';
 
 const isObject = (value) => {
   return value && typeof value === 'object' && value.constructor === Object;
@@ -30,7 +29,7 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCon
     return (
       <Subscribe to={ _containers }>
         { (...containers) => {
-          let mappedState: any = props;
+          let mappedState: any;
 
           if (!injected) {
             injected = makeContainers(containers, config);
