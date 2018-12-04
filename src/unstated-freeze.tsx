@@ -37,7 +37,6 @@ const frezze = (selector: (props: any)) => any, options: any = DEFAULT): any => 
           }
 
           if (!statesAreEqual) {
-
             this.selectedProps = nextSelectedProps;
           }
 
