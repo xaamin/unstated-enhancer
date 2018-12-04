@@ -16,7 +16,7 @@ const makeContainers = (containers: any, config: any): any => {
   return inject;
 }
 
-const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapContainersToProps?: (containers: any) => any) => {
+const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCombinedContainers?: (containers: any) => any) => {
   if (!isObject(config)) {
     throw new Error('Connect needs an object with containers')
   }
@@ -35,8 +35,8 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCon
             injected = makeContainers(containers, config);
           }
 
-          if (mapContainersToProps && !isMapped) {
-            injected = mapContainersToProps(injected);
+          if (mapCombinedContainers && !isMapped) {
+            injected = mapCombinedContainers(injected);
 
             isMapped = true;
           }
