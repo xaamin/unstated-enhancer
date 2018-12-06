@@ -61,12 +61,9 @@ class Logger {
     return this.__containers[container].container
   }
 
-  dispatch(payload) {
+  dispatch(action, payload) {
     if (this.enabled) {
       const info = 'Dispatched';
-      const action = payload.__action;
-
-      delete payload.__action
 
       const group = this.collapsed ? console.groupCollapsed : console.group
 
