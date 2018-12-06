@@ -63,9 +63,21 @@ class Logger {
 
   dispatch(payload) {
     if (this.enabled) {
-      const info = payload.__action;
+      const info = 'Dispatched - ' + payload.__action;
 
       delete payload.__action
+
+      const group = this.collapsed ? console.groupCollapsed : console.group
+
+      const titleStyle = ['color: #C2185B; font-weight: bold;']
+
+      group(`%c ${info}`, ...titleStyle)
+
+      const stylesPrevState = `color: #FFC107; font-weight: bold`
+
+      console.log('%c DATA:', stylesPrevState, payload)
+
+      console.groupEnd()
 
       this.__devtool.send(info, payload)
     }
@@ -179,7 +191,7 @@ class Logger {
 
     const info = this.getInfoForReduxDevTools(name, state) + (jump ? ' → ' + jump : '')
 
-    group(`%c ${info}`, titleStyle)
+    group(`%c ${info}`, ...titleStyle)
 
     const stylesPrevState = `color: ${colors.prevState.color}; font-weight: bold`
 
