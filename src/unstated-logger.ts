@@ -20,6 +20,7 @@ class Logger {
   enabled: boolean
   beauty: boolean
   private __containers: any
+  private __devtool: any
   logger: any
   colors: Object
   details: string[]
@@ -42,7 +43,12 @@ class Logger {
   }
 
   __default() {
+    if (this.enabled) {
+      const name = 'Unstated logger';
 
+      this.__devtool = _global.__REDUX_DEVTOOLS_EXTENSION__.connect({ name })
+      this.__devtool.init()
+    }
   }
 
   config(config: LoggerConfig) {
@@ -53,6 +59,16 @@ class Logger {
 
   get(container: string): any {
     return this.__containers[container].container
+  }
+
+  dispatch(payload) {
+    if (this.enabled) {
+      const info = payload.__action;
+
+      delete payload.__action
+
+      this.__devtool.send(info, payload)
+    }
   }
 
   store() {
