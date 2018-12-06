@@ -82,14 +82,26 @@ class App extends Component {
           <div>
             <h4>Counter</h4>
             <button onClick={ () => counter.decrement() }>-</button>
-            <span>{ counter.state.count }</span>
             <button onClick={ () => counter.increment() }>+</button>
+            <br />
+            <br />
+            <span>From counter state { counter.state.count }</span>
+            <br />
+            <span>From mapped state to props { this.props.count }</span>
+            <br />
+            <br />
           </div>
           <div>
             <h4>Message</h4>
             <button onClick={ () => message.change('Updated') }>Update</button>
-            <span>{ message.state.message }</span>
             <button onClick={ () => message.random() }>Random</button>
+            <br />
+            <br />
+            <span>From message state { message.state.message }</span>
+            <br />
+            <span>From mapped state to props { this.props.message }</span>
+            <br />
+            <br />
           </div>
         </section>
       </div>
@@ -97,8 +109,17 @@ class App extends Component {
   }
 }
 
-export default connect({
+const containers = {
   counter: CounterContainer,
   message: MessageContainer
-})(App);
+};
+
+const mapStateToProps = (containers) => {
+  return {
+    count: containers.counter.state.count,
+    message: containers.message.state.message,
+  }
+}
+
+export default connect(containers, mapStateToProps)(App);
 ```
