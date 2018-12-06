@@ -117,7 +117,9 @@ class Logger {
         }
 
         container.subscribe(() => {
-          const { state } = container
+          const state = { ...container.state }
+
+          delete container.state.__action;
 
           this.logToConsole(this.__containers[name], prevState, state)
 
