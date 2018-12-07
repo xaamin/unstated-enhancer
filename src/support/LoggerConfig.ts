@@ -8,6 +8,7 @@ interface LoggerConfig {
     logger?: Object,
     ignore?: string[],
     details?: string[],
+    debounce?: number,
 }
 
 export default LoggerConfig

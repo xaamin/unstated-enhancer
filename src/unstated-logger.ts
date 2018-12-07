@@ -1,8 +1,9 @@
 import * as differ from 'deep-object-diff'
 import * as unstated from 'unstated'
 import Str from './support/Str'
-import LoggerConfig from './support/LoggerConfig';
+import LoggerConfig from './support/LoggerConfig'
 import colors from './support/logger-colors'
+import Counter from './support/counter'
 
 const _global: any = window || global;
 const __SUPER_SECRET_CONTAINER_DEBUG_HOOK__ = (unstated as any).__SUPER_SECRET_CONTAINER_DEBUG_HOOK__
@@ -16,6 +17,7 @@ if (ENABLED) {
 
 class Logger {
   collapsed: boolean
+  debounce: number
   detailed: boolean
   enabled: boolean
   beauty: boolean
@@ -25,7 +27,8 @@ class Logger {
   colors: Object
   details: string[]
   ignore: string[]
-  private __counter: Number
+  private __widgets: Number
+  private counter: Counter
 
   constructor() {
     this.colors = colors
@@ -37,7 +40,14 @@ class Logger {
     this.ignore = ['JUMP_TO_STATE', 'JUMP_TO_ACTION']
     this.details = ['added', 'updated', 'deleted']
     this.__containers = {}
-    this.__counter = 1
+    this.__widgets = 1
+    this.debounce = 200;
+
+    this.counter = new Counter();
+    this.counter.config({
+      collapsed: this.collapsed,
+      debounce: this.debounce
+    });
 
     this.__default()
   }
@@ -55,6 +65,15 @@ class Logger {
     for (const [key, value] of  Object.entries(config)) {
       this[key] = value;
     }
+
+    this.counter.config({
+      collapsed: this.collapsed,
+      debounce: this.debounce
+    });
+  }
+
+  count(component: any | string) {
+    this.counter.count(component);
   }
 
   get(container: string): any {
@@ -71,9 +90,13 @@ class Logger {
 
       group(`%c ${info} - %c${action}`, ...titleStyle)
 
-      const stylesPrevState = `color: #455A64; font-weight: bold`
+      const contentStyle = `color: #455A64; font-weight: bold`
 
-      console.log('%c DATA:', stylesPrevState, payload)
+      if (payload !== undefined) {
+        console.log('%c DATA:', contentStyle, payload)
+      } else {
+        console.log('%c NO DATA', contentStyle)
+      }
 
       console.groupEnd()
 
@@ -163,7 +186,7 @@ class Logger {
 
   private connect(widget: string, container: any): void {
     let instance: any
-    const name = widget || 'Unstated ' + this.__counter
+    const name = widget || 'Unstated ' + this.__widgets
 
     container.__name = name
 
