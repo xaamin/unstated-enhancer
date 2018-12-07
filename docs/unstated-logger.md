@@ -86,7 +86,7 @@ const containers = Logger.containers();
 Logger.print();
 
 
-// Dispatching an action that does not change the state of the store
+// Dispatching an action that does not change any state
 Logger.dispatch('LOCATION_CHANGED', { latitude: 0, longitude: 0 });
 ```
 
