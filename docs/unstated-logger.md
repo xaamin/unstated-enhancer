@@ -91,9 +91,9 @@ Logger.print();
 Logger.dispatch('LOCATION_CHANGED', { latitude: 0, longitude: 0 });
 ```
 
-The logger accepts the following config options:
-
 ## Config
+
+The logger accepts the following config options:
 
 ```js
 const config = {
