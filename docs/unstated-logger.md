@@ -74,6 +74,8 @@ class CounterContainer extends Container<CounterState> {
 After logger get staterted it exposes some methods and config options so you can explore the containers or their states in the Dev Tools panel.
 
 ```js
+import { Logger } from 'unstated-enhancers';
+
 // Get all the states in the store
 const store = Logger.store();
 // Do something with the store
