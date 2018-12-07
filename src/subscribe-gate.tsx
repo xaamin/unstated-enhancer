@@ -11,7 +11,7 @@ type SubscribeProps = {
 }
 export default function SubscribeGate(props: SubscribeProps): any {
   let bootstrapped: boolean = PERSIST_ENABLED ? false : true;
-
+  console.log('GATTTTTTTTTTTE', props)
   return (
     <Subscribe {...props}>
       {(...args) => {

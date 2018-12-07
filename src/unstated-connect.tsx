@@ -16,7 +16,7 @@ const makeContainers = (containers: any, config: any): any => {
   return inject;
 }
 
-const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCombinedContainers?: (containers: any) => any): any => {
+const connect = (config: any = {}, mapStateToProps?: (state: any) => any, options: any = {}): any => {
   if (!isObject(config)) {
     throw new Error('Connect needs an object with containers')
   }
@@ -24,10 +24,12 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCom
   let _containers: any[] = Object.values(config);
   let injected: any;
   let isMapped: boolean = false;
-
+  const mapCombinedContainers: (containers: any) => any = options.mapCombinedContainers;
+  const loading: React.ReactNode = options.loading;
+  console.log('CONNNNNNNNECT', options)
   return Component => props => {
     return (
-      <SubscribeGate to={ _containers }>
+      <SubscribeGate to={ _containers } loading={ loading }>
         { (...containers) => {
           let mappedState: any;
 
