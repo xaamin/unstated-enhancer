@@ -77,7 +77,7 @@ class Logger {
 
       console.groupEnd()
 
-      this.__devtool.send(info, payload)
+      this.__devtool.send(`${info} - ${action}`, payload)
     }
   }
 
@@ -124,7 +124,11 @@ class Logger {
     console.log(`%c → ${text}`, style, value)
   }
 
-  start() {
+  start(config?: LoggerConfig) {
+    if (config) {
+      this.config(config);
+    }
+
     if (this.enabled) {
       __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
         let prevState = container.state || container.constructor.state
