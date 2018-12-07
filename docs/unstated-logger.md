@@ -84,6 +84,10 @@ const containers = Logger.containers();
 
 // Output all the states
 Logger.print();
+
+
+// Dispatching an action that does not change the state of the store
+Logger.dispatch('LOCATION_CHANGED', { latitude: 0, longitude: 0 });
 ```
 
 The logger accepts the following config options:
