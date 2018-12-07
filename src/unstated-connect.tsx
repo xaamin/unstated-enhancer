@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Subscribe } from 'unstated';
+import SubscribeGate from './subscribe-gate';
 
 const isObject = (value) => {
   return value && typeof value === 'object' && value.constructor === Object;
@@ -16,7 +16,7 @@ const makeContainers = (containers: any, config: any): any => {
   return inject;
 }
 
-const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCombinedContainers?: (containers: any) => any) => {
+const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCombinedContainers?: (containers: any) => any): any => {
   if (!isObject(config)) {
     throw new Error('Connect needs an object with containers')
   }
@@ -27,7 +27,7 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCom
 
   return Component => props => {
     return (
-      <Subscribe to={ _containers }>
+      <SubscribeGate to={ _containers }>
         { (...containers) => {
           let mappedState: any;
 
@@ -56,7 +56,7 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, mapCom
 
           return <Component {...newProps} containers={ injected } />;
         } }
-      </Subscribe>
+      </SubscribeGate>
     )
   }
 }
