@@ -86,9 +86,32 @@ const containers = Logger.containers();
 
 // Output all the states
 Logger.print();
+```
 
-// Dispatching an action that does not change any state
-Logger.dispatch('LOCATION_CHANGED', { latitude: 0, longitude: 0 });
+### dispatch
+
+Dispatch an action that does not change any state
+
+```js
+...
+render() {
+  Logger.dispatch('LOCATION_CHANGED', { latitude: 0, longitude: 0 });
+}
+```
+
+### count
+
+Log the number of updates occurring on your components
+
+```js
+...
+render() {
+  Logger.count(this);
+
+  // Or with your custom name
+
+  Logger.count('AWESOME_COMPONENT');
+}
 ```
 
 ## Config
@@ -111,6 +134,14 @@ Type: `boolean`
 Default: `false`
 
 Collapse the state change logs in the Dev Tools console.
+
+#### debounce
+
+Type: `number`
+<br>
+Default: `200`
+
+Delay used for re-render counts when you are tracking the render of your components
 
 #### detailed
 
