@@ -8,7 +8,7 @@ let PERSIST_ENABLED: boolean = false;
 
 class Persist {
   private __containers: any
-  private key: boolean
+  private key: string
   private version: number
   private debounce: number
   private storage: any

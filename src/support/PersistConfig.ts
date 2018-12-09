@@ -1,5 +1,5 @@
 interface PersistConfig {
-    key: boolean,
+    key: string,
     version: number,
     storage: any
 }
