@@ -45,7 +45,7 @@ class CounterContainer extends PersistContainer<CounterState> {
 
 Type: `string`
 <br>
-Key used to storing the state
+Key used by storage
 
 #### version
 
