@@ -13,8 +13,8 @@ import LocalForage from 'localforage'
 
 const options = {
     key: 'root',
-    version: 1.0
-    storage: LocalForage
+    version: 1.0,
+    storage: LocalForage,
     debounce: 250
 }
 
