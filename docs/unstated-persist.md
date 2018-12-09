@@ -23,7 +23,7 @@ Persist.start(options);
 // ... Yor component code as always
 ```
 
-To persist the state in containers you must provide a persist key inside the container class
+To persist the state iof your containers you must provide a `persist` key inside the container class definition.
 
 ```js
 
