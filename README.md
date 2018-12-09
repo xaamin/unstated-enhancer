@@ -51,3 +51,11 @@ Combine multiple containers into one and make them communicate with each other.
 Base code from [unstated-compose](https://github.com/fabiospampinato/unstated-compose) but with no child and parent class inheritance.
 
 [Docs](https://github.com/xaamin/unstated-enhancers/blob/master/docs/unstated-combine.md)
+
+### Persist
+
+Adds persistence to your `unstated` containers
+
+Heavily inspired by [unstated-persist](https://github.com/rt2zz/unstated-persist)
+
+[Docs](https://github.com/xaamin/unstated-enhancers/blob/master/docs/unstated-persist.md)

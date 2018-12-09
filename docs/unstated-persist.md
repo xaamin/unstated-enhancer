@@ -1,6 +1,6 @@
 ## Unstated Persist
 
-Add persistence support for `unstated`
+Adds persistence to your `unstated` containers
 
 ### Usage
 Usage is simple, all you need is to pass a configuration object to the start function of persist. You must use the `connect` function from `unstated-enhancers` who actually takes care of the async load of the state showing up a loader while is busy loading the state from persistence.
