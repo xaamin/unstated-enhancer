@@ -190,3 +190,18 @@ Type: `boolean`
 Default: `false`
 
 When multiple combined containers is passed to the connect function setting this option to true avoids containers name collision
+
+
+**loading**
+
+Type: `ReactNode`
+<br>
+Default: `null`
+
+Used the the `SubscribeGate` component to show up a loader when state is loaded from persistence.
+
+```js
+const options = {
+  loading: <p>Loading your app...</p>
+}
+```
