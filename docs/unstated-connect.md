@@ -121,5 +121,72 @@ const mapStateToProps = (containers) => {
   }
 }
 
-export default connect(containers, mapStateToProps)(App);
+const options = {
+  mapCombinedContainers: true,
+  concatCombinedContainerNames: true
+}
+
+export default connect(containers, mapStateToProps, options)(App);
 ```
+
+## API
+
+### containers
+Type: `object`
+
+Object list of containers to be connected with the component
+
+```js
+...
+
+const containers = {
+  counter: CounterContainer,
+  message: MessageContainer
+};
+
+...
+```
+
+### mapStateToProps
+Type: `Function`
+
+Function who maps containers state to component props
+
+```js
+...
+
+const mapStateToProps = (containers) => {
+  return {
+    count: containers.counter.state.count,
+    message: containers.message.state.message,
+  }
+}
+
+...
+```
+
+### options
+
+**mapCombinedContainers**
+
+Type: `boolean|Function`
+
+If a combined contaners is passed and this is setting to true it extracts the combined containers. You can provide your own `mapCombinedContainers` function if you want.
+
+```
+const mapCombinedContainers = (containers) => {
+  return {
+    list: containers.route.list,
+    upsert: containers.route.upsert,
+    info: containers.route.info
+  }
+}
+```
+
+**concatCombinedContainerNames**
+
+Type: `boolean`
+<br>
+Default: `false`
+
+When multiple combined containers is passed to the connect function setting this option to true avoids containers name collision
