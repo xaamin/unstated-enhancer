@@ -16,17 +16,42 @@ const makeContainers = (containers: any, config: any): any => {
   return inject;
 }
 
+const mapCombinedContainersAuto = (config: any = {}, options: any): any => {
+  let containers = {};
+
+  let keys: string[] = Object.keys(config);
+
+  keys.forEach((key) => {
+    containers[key] = config[key]
+
+    let _keys: string[] = Object.keys(config[key].ctx)
+
+    _keys.forEach((_key) => {
+      let name = _key;
+
+      if (options.concatCombinedContainerNames) {
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+        name = key + name
+      }
+
+      containers[name] = config[key].ctx[_key]
+    })
+  })
+
+  return containers;
+}
+
 const connect = (config: any = {}, mapStateToProps?: (state: any) => any, options: any = {}): any => {
-  if (!isObject(config)) {
+  if (!isObject(config) || Object.keys(config).length === 0) {
     throw new Error('Connect needs an object with containers')
   }
 
   let _containers: any[] = Object.values(config);
   let injected: any;
   let isMapped: boolean = false;
-  const mapCombinedContainers: (containers: any) => any = options.mapCombinedContainers;
+  const mapCombinedContainers: (containers: any, options?: any) => any = typeof options.mapCombinedContainers === 'boolean' ? mapCombinedContainersAuto : options.mapCombinedContainers;
   const loading: React.ReactNode = options.loading;
-  console.log('CONNNNNNNNECT', options)
+
   return Component => props => {
     return (
       <SubscribeGate to={ _containers } loading={ loading }>
@@ -38,7 +63,7 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, option
           }
 
           if (mapCombinedContainers && !isMapped) {
-            injected = mapCombinedContainers(injected);
+            injected = mapCombinedContainers(injected, options);
 
             isMapped = true;
           }
