@@ -24,18 +24,20 @@ const mapCombinedContainersAuto = (config: any = {}, options: any): any => {
   keys.forEach((key) => {
     containers[key] = config[key]
 
-    let _keys: string[] = Object.keys(config[key].ctx)
+    if (config[key].ctx) {
+      let _keys: string[] = Object.keys(config[key].ctx)
 
-    _keys.forEach((_key) => {
-      let name = _key;
+      _keys.forEach((_key) => {
+        let name = _key;
 
-      if (options.concatCombinedContainerNames) {
-        name = name.charAt(0).toUpperCase() + name.slice(1)
-        name = key + name
-      }
+        if (options.concatCombinedContainerNames) {
+          name = name.charAt(0).toUpperCase() + name.slice(1)
+          name = key + name
+        }
 
-      containers[name] = config[key].ctx[_key]
-    })
+        containers[name] = config[key].ctx[_key]
+      })
+    }
   })
 
   return containers;
