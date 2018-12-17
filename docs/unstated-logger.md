@@ -76,13 +76,15 @@ After logger get staterted it exposes some methods and config options so you can
 ```js
 import { Logger } from 'unstated-enhancers';
 
+// Pass custom config
+Logger.start({
+  enabled: true,
+  collapsed: true
+});
+
 // Get all the states in the store
 const store = Logger.store();
 // Do something with the store
-
-// Get all containers
-const containers = Logger.containers();
-// Do something with the containers
 
 // Output all the states
 Logger.print();
