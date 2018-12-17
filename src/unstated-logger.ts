@@ -4,16 +4,19 @@ import Str from './support/Str'
 import LoggerConfig from './support/LoggerConfig'
 import colors from './support/logger-colors'
 import Counter from './support/counter'
+import polyfill from './support/console';
 
 const _global: any = window || global;
 const __SUPER_SECRET_CONTAINER_DEBUG_HOOK__ = (unstated as any).__SUPER_SECRET_CONTAINER_DEBUG_HOOK__
 const ENABLED = typeof _global !== 'undefined' && process.env.NODE_ENV !== 'production' && _global.__REDUX_DEVTOOLS_EXTENSION__
+const console = polyfill(_global && _global.console ? _global.console : {});
 
 if (ENABLED) {
   console.log(`You're currently using the unstated logger for development, disable it for production`)
 } else {
   console.log(`You're in production or redux dev tools plugin is missing so unstated logger is disabled`)
 }
+
 
 class Logger {
   collapsed: boolean
@@ -48,8 +51,6 @@ class Logger {
       collapsed: this.collapsed,
       debounce: this.debounce
     });
-
-    this.__default()
   }
 
   __default() {
@@ -70,17 +71,17 @@ class Logger {
       collapsed: this.collapsed,
       debounce: this.debounce
     });
+
+    this.enabled = this.enabled && _global.__REDUX_DEVTOOLS_EXTENSION__;
   }
 
   count(component: any | string) {
-    this.counter.count(component);
+    if (this.enabled) {
+      this.counter.count(component);
+    }
   }
 
-  get(container: string): any {
-    return this.__containers[container].container
-  }
-
-  dispatch(action, payload) {
+  dispatch(action, payload = undefined) {
     if (this.enabled) {
       const info = 'Dispatched';
 
@@ -114,16 +115,6 @@ class Logger {
     return store
   }
 
-  containers() {
-    const containers: any = {}
-
-    for (const [key, value] of Object.entries(this.__containers)) {
-      containers[key] = (value as any).container
-    }
-
-    return containers
-  }
-
   print() {
     const color = (this.colors as any).title
     const style = `color: ${color}; font-weight: bold`
@@ -151,6 +142,8 @@ class Logger {
     if (config) {
       this.config(config);
     }
+
+    this.__default()
 
     if (this.enabled) {
       __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
