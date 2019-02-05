@@ -30,7 +30,7 @@ const combine = (containers: object, name = 'CombineContainer') => {
 
             const state = container.state;
 
-            this.setState ({
+            return this.setState ({
               [name]: state,
               __action: 'COMBINE_CONTAINERS_STATES'
             });
