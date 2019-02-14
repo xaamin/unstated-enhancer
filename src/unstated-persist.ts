@@ -24,7 +24,7 @@ class Persist {
   }
 
   config(config: PersistConfig) {
-    for (const [key, value] of  Object.entries(config)) {
+    for (const [key, value] of Object.entries(config)) {
       this[key] = value;
     }
 
@@ -36,6 +36,14 @@ class Persist {
 
   async clear() {
     await this.storage.removeItem(this.key);
+
+    const containers = this.containers();
+
+    for (const container of Object.values(containers)) {
+      if ((container as any).clear && typeof (container as any).clear === 'function') {
+        (container as any).clear();
+      }
+    }
   }
 
   containers() {
