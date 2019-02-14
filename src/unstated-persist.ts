@@ -34,12 +34,12 @@ class Persist {
     }
   }
 
-  clear() {
+  clear(method: string = 'reset') {
     const containers = this.containers();
 
     for (const container of Object.values(containers)) {
-      if ((container as any).clear && typeof (container as any).clear === 'function') {
-        (container as any).clear();
+      if ((container as any)[method] && typeof (container as any)[method] === 'function') {
+        (container as any)[method]();
       }
     }
   }
