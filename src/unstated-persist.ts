@@ -34,9 +34,7 @@ class Persist {
     }
   }
 
-  async clear() {
-    await this.storage.removeItem(this.key);
-
+  clear() {
     const containers = this.containers();
 
     for (const container of Object.values(containers)) {
@@ -44,6 +42,10 @@ class Persist {
         (container as any).clear();
       }
     }
+  }
+
+  async flush() {
+    await this.storage.removeItem(this.key);
   }
 
   containers() {
@@ -64,7 +66,6 @@ class Persist {
 
       queue(bootstrap);
     })
-
   }
 
   __bootstrap(container: any) {
