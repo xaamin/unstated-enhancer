@@ -34,14 +34,14 @@ class Persist {
     }
   }
 
-  clear(method: string = 'reset') {
+  async clear() {
     const containers = this.containers();
 
     for (const container of Object.values(containers)) {
-      if ((container as any)[method] && typeof (container as any)[method] === 'function') {
-        (container as any)[method]();
-      }
+      (container as any).state = (container as any).__containerInitialState;
     }
+
+    await this.flush();
   }
 
   async flush() {
@@ -85,6 +85,7 @@ class Persist {
     const containerDefaultState: any = container.state || {}
 
     container.hydrated = false;
+    container.__containerInitialState = containerDefaultState;
 
     try {
       let serialState = await this.storage.getItem(this.key);

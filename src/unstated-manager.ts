@@ -43,6 +43,20 @@ class Manager {
     return containers
   }
 
+  raise(method: string, params: any = {}) {
+    for (const container of Object.values(this.__containers)) {
+      if ((container as any)[method] && typeof (container as any)[method] === 'function') {
+        (container as any)[method](params);
+      }
+    }
+  }
+
+  reset() {
+    for (const container of Object.values(this.__containers)) {
+      (container as any).state = (container as any).__containerInitialState;
+    }
+  }
+
   get(name: string) {
     return this.__containers[name]
   }
@@ -58,6 +72,7 @@ class Manager {
   __bootstrap() {
     __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
       let name = container.name || container.constructor.name
+      container.__containerInitialState = container.state || {}
 
       if (this.beauty) {
         name = name.replace(/container$/ig, '');
