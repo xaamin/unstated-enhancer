@@ -35,10 +35,12 @@ class Persist {
   }
 
   async clear() {
-    const containers = this.containers();
+    this.state = {};
 
-    for (const container of Object.values(containers)) {
+    for (const [key, container] of Object.entries(this.__containers)) {
       (container as any).state = (container as any).__containerInitialState;
+
+      this.state[key] = (container as any).state;
     }
 
     await this.flush();
