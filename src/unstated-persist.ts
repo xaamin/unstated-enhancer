@@ -9,6 +9,7 @@ let PERSIST_ENABLED: boolean = false;
 class Persist {
   private __containers: any
   private key: string
+  private prefix: string
   private version: number
   private debounce: number
   private storage: any
@@ -19,6 +20,7 @@ class Persist {
     this.__containers = {};
     this.state = {};
     this.debounce = 250;
+    this.prefix = 'unstated::'
   }
 
   config(config: PersistConfig) {
@@ -32,12 +34,12 @@ class Persist {
     }
   }
 
-  print() {
-
+  async clear() {
+    await this.storage.removeItem(this.key);
   }
 
   containers() {
-      return this.__containers;
+    return this.__containers;
   }
 
   start(config?: PersistConfig) {
@@ -46,6 +48,8 @@ class Persist {
     }
 
     PERSIST_ENABLED = true;
+
+    this.key = this.prefix + this.key
 
     __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
       const bootstrap = () => this.__bootstrap(container)
