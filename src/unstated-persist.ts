@@ -72,9 +72,9 @@ class Persist {
 
   __bootstrap(container: any) {
     if (container.persist) {
-      let name = container.name || container.constructor.name
+      const config = container.persist
 
-      this.__containers[name] = container
+      this.__containers[config.key] = container
 
       this.rehydrate(container)
     }
@@ -100,9 +100,9 @@ class Persist {
         // NOTE:
         // No migrations yet, just clear state.
         // Can be added later with similar api to redux-persist.
-        if (newState._persist_version !==  this.version) {
+        if (newState._persist_version !== this.version) {
           if (process.env.NODE_ENV !== 'production') {
-            console.log(`unstated-persist: state version mismatch for ${name}, skipping rehydration`)
+            console.log(`unstated-persist: state version mismatch for ${key} (${newState._persist_version} vs ${this.version}), skipping rehydration`)
           }
 
           container.setState({
