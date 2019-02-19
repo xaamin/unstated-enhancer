@@ -1,6 +1,6 @@
 {
   "name": "unstated-enhancers",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Unstated tools for state management",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
