@@ -53,7 +53,16 @@ class Manager {
 
   reset() {
     for (const container of Object.values(this.__containers)) {
-      (container as any).state = (container as any).__containerInitialState;
+      let props: any = {}
+
+      if ((container as any).persist) {
+        props._persist_version = (container as any).state._persist_version
+      }
+
+      (container as any).state = {
+        ...(container as any).__containerInitialState,
+        ...props
+      };
     }
   }
 

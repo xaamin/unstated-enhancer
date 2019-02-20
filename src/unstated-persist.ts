@@ -38,7 +38,10 @@ class Persist {
     this.state = {};
 
     for (const [key, container] of Object.entries(this.__containers)) {
-      (container as any).state = (container as any).__containerInitialState;
+      (container as any).state = {
+        ...(container as any).__containerInitialState,
+        _persist_version: (container as any).state._persist_version
+      };
 
       this.state[key] = (container as any).state;
     }
