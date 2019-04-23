@@ -80,8 +80,9 @@ class Manager {
 
   __bootstrap() {
     __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
-      let name = container.name || container.constructor.name
-      container.__containerInitialState = container.state || {}
+      let name = container.container || container.constructor.container || container.name || container.constructor.name
+
+      container.__containerInitialState = container.state || container.constructor.state || {}
 
       if (this.beauty) {
         name = name.replace(/container$/ig, '');

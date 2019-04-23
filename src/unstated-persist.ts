@@ -88,7 +88,7 @@ class Persist {
     const key = config.key
     const version = config.version || this.version
 
-    const containerDefaultState: any = container.state || {}
+    const containerDefaultState: any = container.state || container.constructor.state || {}
 
     container.hydrated = false;
     container.__containerInitialState = containerDefaultState;
