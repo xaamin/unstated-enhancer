@@ -88,7 +88,7 @@ class Manager {
   }
 
   bootstrap(container: any) {
-    let name = container.key || container.constructor.key || container.name || container.constructor.name
+    let name = container.name || container.constructor.name
 
     container.__containerInitialState = container.state || container.constructor.state || {}
 
