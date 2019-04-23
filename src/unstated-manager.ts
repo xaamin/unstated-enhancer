@@ -1,5 +1,6 @@
 import * as unstated from 'unstated'
 import ManagerConfig from './support/ManagerConfig';
+import queue from './support/queue';
 
 const __SUPER_SECRET_CONTAINER_DEBUG_HOOK__ = (unstated as any).__SUPER_SECRET_CONTAINER_DEBUG_HOOK__
 
@@ -14,7 +15,7 @@ class Manager {
   }
 
   run() {
-    this.__bootstrap();
+    this.start();
   }
 
   config(config: ManagerConfig) {
@@ -78,18 +79,24 @@ class Manager {
     }
   }
 
-  __bootstrap() {
+  start() {
     __SUPER_SECRET_CONTAINER_DEBUG_HOOK__((container: any) => {
-      let name = container.container || container.constructor.container || container.name || container.constructor.name
+      const bootstrap = () => this.bootstrap(container)
 
-      container.__containerInitialState = container.state || container.constructor.state || {}
-
-      if (this.beauty) {
-        name = name.replace(/container$/ig, '');
-      }
-
-      this.__containers[name] = container
+      queue(bootstrap);
     })
+  }
+
+  bootstrap(container: any) {
+    let name = container.key || container.constructor.key || container.name || container.constructor.name
+
+    container.__containerInitialState = container.state || container.constructor.state || {}
+
+    if (this.beauty) {
+      name = name.replace(/container$/ig, '');
+    }
+
+    this.__containers[name] = container
   }
 }
 
