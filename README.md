@@ -12,7 +12,8 @@ yarn install --save unstated-enhancers
 
 ### Manager
 
-Global containers manager
+
+Global containers manager registration
 
 ```js
 import { Manager } from 'unstated-enhancers';
@@ -20,13 +21,27 @@ import { Manager } from 'unstated-enhancers';
 Manager.run();
 ```
 
-Then in other places simple call your containers using the container class name
+To register your containers into the manager you must provide a `name` key inside the container class definition.
+
+```js
+
+type CounterState = {
+  count: number
+};
+
+class CounterContainer extends PersistContainer<CounterState> {
+  name = 'counter'
+ // ...
+}
+```
+
+Then in other places simple call your containers using the container name property registered previously
 
 ```js
 import { Manager } from 'unstated-enhancers';
 
 // ...
-    Manager.get('CounterContainer').increment();
+    Manager.get('counter').increment();
 // ...
 ```
 
