@@ -106,7 +106,9 @@ class Persist {
         // Can be added later with similar api to redux-persist.
         if (!newState || newState._persist_version !== version) {
           if (process.env.NODE_ENV !== 'production') {
-            console.log(`unstated-persist: state version mismatch for ${key} (${newState._persist_version} vs ${version}), skipping rehydration`)
+            const prevVersion = newState ? newState._persist_version : -1;
+
+            console.log(`unstated-persist: state version mismatch for ${key} (${prevVersion} vs ${version}), skipping rehydration`)
           }
 
           container.setState({
