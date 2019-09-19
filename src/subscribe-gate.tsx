@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Subscribe, Container } from 'unstated'
 import { PERSIST_ENABLED } from './unstated-persist';
 
-const isBootstrapped = (container: Container<any>) => (container as any).hydrated === true || !(container as any).persist;
+const isBootstrapped = (container: Container<any>) => (container as any).hydrated === true || (container as any).persist === undefined || ((container as any).state !== undefined && (container as any).state._persist_version !== undefined);
 
 type SubscribeProps = {
   loading: React.ReactNode,
