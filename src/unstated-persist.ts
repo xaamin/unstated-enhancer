@@ -111,25 +111,25 @@ class Persist {
             console.log(`unstated-persist: state version mismatch for ${key} (${prevVersion} vs ${version}), skipping rehydration`)
           }
 
-          container.setState({
+          await container.setState({
             ...this.persistStatePartial,
             ...containerDefaultState
           })
         } else {
           // State versions match, set state as is
-          container.setState({
+          await container.setState({
             ...newState,
             __action: 'REHYDRATE'
           })
         }
       } else {
-        container.setState({
+        await container.setState({
           ...this.persistStatePartial,
           ...containerDefaultState
         })
       }
     } catch (err) {
-      container.setState({
+      await container.setState({
         ...this.persistStatePartial,
         ...containerDefaultState
       })
