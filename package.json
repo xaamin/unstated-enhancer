@@ -1,6 +1,6 @@
 {
   "name": "unstated-enhancers",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "Unstated tools for state management",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -15,7 +15,10 @@
     "enhancer",
     "middleware",
     "persist",
-    "condition"
+    "condition",
+    "state",
+    "state management",
+    "react state"
   ],
   "scripts": {
     "build": "tsc"
