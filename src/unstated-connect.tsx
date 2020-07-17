@@ -43,7 +43,11 @@ const mapCombinedContainersAuto = (config: any = {}, options: any): any => {
   return containers;
 }
 
-const connect = (config: any = {}, mapStateToProps?: (state: any) => any, options: any = {}): any => {
+const connect = (
+  config: any = {},
+  mapStateToProps?: (state: any) => any,
+  mapActionsToProps?: (state: any) => any, options: any = {}
+): any => {
   if (!isObject(config) || Object.keys(config).length === 0) {
     throw new Error('Connect needs an object with containers')
   }
@@ -59,6 +63,7 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, option
       <SubscribeGate to={ _containers } loading={ loading }>
         { (...containers) => {
           let mappedState: any;
+          let mappedActions: any;
 
           if (!injected) {
             injected = makeContainers(containers, config);
@@ -74,12 +79,23 @@ const connect = (config: any = {}, mapStateToProps?: (state: any) => any, option
             mappedState = mapStateToProps(injected);
           }
 
+          if (mapActionsToProps) {
+            mappedActions = mapActionsToProps(injected);
+          }
+
           let newProps = props;
 
           if (mappedState) {
             newProps = {
               ...props,
               ...mappedState
+            };
+          }
+
+          if (mappedActions) {
+            newProps = {
+              ...newProps,
+              ...mappedActions
             };
           }
 
